@@ -1,7 +1,5 @@
-base.ui.url=https://www.greencity.cx.ua/#/
+base.ui.url=https://www.greencity.cx.ua/#/greenCity
 base.api.url=https://api-greencity.azurewebsites.net/
-
-implicitlyWait=10
 
 user.email=your.user@example.com
 user.name=Your User Name

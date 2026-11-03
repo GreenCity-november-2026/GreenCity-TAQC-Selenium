@@ -26,11 +26,6 @@ public class TestValueProvider {
         return properties != null ? properties.getProperty("base.api.url") : System.getenv("BASE_API_URL");
     }
 
-    public int getImplicitlyWait() {
-        return properties != null ? Integer.parseInt(properties.getProperty("implicitlyWait")) : Integer.parseInt(System.getenv("IMPLICITLY_WAIT"));
-    }
-
-
     public String getUserEmail() {
         return properties != null ? properties.getProperty("user.email") : System.getenv("USER_EMAIL");
     }

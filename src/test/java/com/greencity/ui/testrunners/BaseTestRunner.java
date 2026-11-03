@@ -11,8 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.time.Duration;
-
 public class BaseTestRunner {
     protected WebDriver driver;
     protected static TestValueProvider testValueProvider;
@@ -41,7 +39,6 @@ public class BaseTestRunner {
 
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(testValueProvider.getImplicitlyWait()));
     }
 
     @AfterEach

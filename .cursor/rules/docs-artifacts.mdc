@@ -1,0 +1,10 @@
+---
+description: Collect generated artifacts in the docs folder
+alwaysApply: true
+---
+
+# Artifacts
+
+Put documents, notes, diagrams, reports, and other non-code deliverables produced during work into `docs/`.
+
+Keep source code, tests, and Maven build output (`target/`) out of `docs/`.

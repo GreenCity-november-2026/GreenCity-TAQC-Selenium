@@ -34,9 +34,8 @@ cp src/test/resources/config.properties.example src/test/resources/config.proper
 Edit `src/test/resources/config.properties`:
 
 ```properties
-base.ui.url=https://www.greencity.cx.ua/#/
+base.ui.url=https://www.greencity.cx.ua/#/greenCity
 base.api.url=https://api-greencity.azurewebsites.net/
-implicitlyWait=10
 
 user.email=your.user@example.com
 user.name=Your User Name
@@ -48,6 +47,10 @@ admin.password=admin_password
 ```
 
 > `config.properties` is in `.gitignore` — do not commit credentials.
+
+`base.ui.url` must open the GreenCity module (`#/greenCity`). The site root can redirect to UBS, which this starter does not cover.
+
+Waits are explicit. `Base` already creates a `WebDriverWait` of 10 seconds. Do not set an implicit wait on the driver: together with the explicit wait it makes element lookups unpredictable.
 
 ### 3. Install dependencies
 
@@ -105,27 +108,33 @@ src/
 
 ### New Page Object
 
+A page is a screen with its own URL under `#/greenCity`. Sign in, sign up, and "forgot password" are not pages: the header opens them as one modal, and the URL does not change. Add that later as a modal, not as `SignInPage`.
+
 1. Create a class in `src/main/java/com/greencity/ui/page/<pagename>/`
 2. Extend `BasePage`
 3. Add `@FindBy` locators and page methods
 
-Example:
+Example for `#/greenCity/about`:
 
 ```java
-package com.greencity.ui.page.signin;
+package com.greencity.ui.page.about;
 
 import com.greencity.ui.page.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class SignInPage extends BasePage {
+public class AboutPage extends BasePage {
 
-    @FindBy(css = "input[formcontrolname='email']")
-    private WebElement emailInput;
+    @FindBy(css = "h2.section__header")
+    private WebElement title;
 
-    public SignInPage(WebDriver driver) {
+    public AboutPage(WebDriver driver) {
         super(driver);
+    }
+
+    public String getTitle() {
+        return title.getText();
     }
 }
 ```
@@ -147,19 +156,23 @@ Example:
 ```java
 package com.greencity.ui;
 
+import com.greencity.ui.page.about.AboutPage;
 import com.greencity.ui.testrunners.BaseTestRunner;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class SignInTest extends BaseTestRunner {
+public class AboutTest extends BaseTestRunner {
 
     @Test
-    void signInPageShouldBeAccessible() {
-        assertTrue(homePage.getHeader().getLogo().isDisplayed());
+    void aboutTitleShouldBeVisible() {
+        AboutPage aboutPage = homePage.getHeader().openAbout();
+        assertFalse(aboutPage.getTitle().isBlank());
     }
 }
 ```
+
+`openAbout()` is a method you add on `HeaderComponent`. It clicks the About us link and returns `new AboutPage(driver)`.
 
 ### Cucumber Feature (optional)
 
