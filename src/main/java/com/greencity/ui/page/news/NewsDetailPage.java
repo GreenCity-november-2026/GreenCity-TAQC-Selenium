@@ -5,6 +5,11 @@ import org.openqa.selenium.WebDriver;
 
 public class NewsDetailPage extends GreenCityPage {
 
+    @Override
+    protected String getRoute() {
+        return ".*#/greenCity/news/\\d+.*";
+    }
+
     public NewsDetailPage(WebDriver driver) {
         super(driver);
     }

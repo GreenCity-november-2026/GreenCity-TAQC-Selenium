@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeStats extends BaseComponent {
-    @FindBy(css = "#stats h2.section-caption")
+    @FindBy(css = "h2.section-caption")
     private WebElement caption;
 
-    @FindBy(css = ".stat-row h3")
+    @FindBy(css = "app-stat-row")
     private List<WebElement> statRowRoots;
 
     public HomeStats(WebDriver driver, WebElement rootElement) {

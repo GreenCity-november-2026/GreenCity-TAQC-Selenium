@@ -54,4 +54,3 @@ public class SubscribeForm extends BaseComponent {
         return cssClass != null && cssClass.contains("visible") && validationError.isDisplayed();
     }
 }
-

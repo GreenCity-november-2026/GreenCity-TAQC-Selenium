@@ -50,7 +50,7 @@ public class StatRow extends BaseComponent {
     @Step("Start habit from stat row as guest")
     public AuthModal startHabitAsGuest() {
         clickStartHabit();
-        return new AuthModal(driver, rootElement);
+        return new AuthModal(driver);
     }
 
     @Step("Open places from stat row")

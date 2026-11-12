@@ -13,6 +13,11 @@ import org.openqa.selenium.support.FindBy;
 
 public class HomePage extends GreenCityPage {
 
+    @Override
+    protected String getRoute() {
+        return ".*#/greenCity/?$";
+    }
+
     @FindBy(css = "app-homepage header#header")
     private WebElement heroRoot;
 

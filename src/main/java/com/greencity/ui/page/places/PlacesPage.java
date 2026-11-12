@@ -5,6 +5,11 @@ import org.openqa.selenium.WebDriver;
 
 public class PlacesPage extends GreenCityPage {
 
+    @Override
+    protected String getRoute() {
+        return ".*#/greenCity/places/?$";
+    }
+
     public PlacesPage(WebDriver driver) {
         super(driver);
     }

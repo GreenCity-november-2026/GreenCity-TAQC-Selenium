@@ -91,8 +91,6 @@ public abstract class Base {
         } catch (Exception e) {
             throw e;
         }
-        wait.until(d -> (Boolean) threadJs.executeScript(
-                "return Math.ceil(window.innerHeight + window.pageYOffset) >= document.body.scrollHeight - 1;"));
     }
 
     @Deprecated

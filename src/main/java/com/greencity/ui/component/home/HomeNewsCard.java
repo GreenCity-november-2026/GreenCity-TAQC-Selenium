@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class HomeNewsCard extends BaseComponent {
-    @FindBy(css = "#events h2.section-caption")
+    @FindBy(css = "h3")
     private WebElement title;
 
     @FindBy(css = "a.read-more")

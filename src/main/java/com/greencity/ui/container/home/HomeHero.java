@@ -12,7 +12,7 @@ public class HomeHero extends BaseComponent {
     @FindBy(css = "#header-left h1")
     private WebElement title;
 
-    @FindBy(css = "#header-left h1")
+    @FindBy(css = "#header-left p")
     private WebElement text;
 
     @FindBy(css = "#header-left button")
@@ -46,6 +46,6 @@ public class HomeHero extends BaseComponent {
     public AuthModal startHabitAsGuest() {
         waitUntilElementClickable(startFormingHabitButton);
         startFormingHabitButton.click();
-        return new AuthModal(driver, rootElement);
+        return new AuthModal(driver);
     }
 }

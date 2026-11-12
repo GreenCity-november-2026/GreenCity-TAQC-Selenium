@@ -25,12 +25,12 @@ public abstract class BasePage extends Base {
     @FindBy(xpath = "//app-header")
     private WebElement headerRoot;
     @FindBy(xpath = "//footer")
-    private WebElement FooterRoot;
+    private WebElement footerRoot;
 
     public BasePage(WebDriver driver) {
         super(driver);
         header = new HeaderComponent(driver, headerRoot);
-        footer = new FooterComponent(driver, FooterRoot);
+        footer = new FooterComponent(driver, footerRoot);
     }
 
 
@@ -47,6 +47,4 @@ public abstract class BasePage extends Base {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
         return wait.until(ExpectedConditions.invisibilityOf(element));
     }
-
-
 }
