@@ -15,18 +15,24 @@ public class BaseClient {
 
 
     public BaseClient(String baseUrl) {
-        this.baseAPIUrl = baseUrl;
-        contentType = ContentType.JSON;
+        this(baseUrl, ContentType.JSON);
     }
 
     public BaseClient(String baseUrl, ContentType contentType) {
-        this.baseAPIUrl = baseUrl;
+        if (baseUrl == null || baseUrl.isBlank()) {
+            throw new IllegalArgumentException("Base API URL cannot be empty");
+        }
+
+        if (contentType == null) {
+            throw new IllegalArgumentException("Content type cannot be null");
+        }
+
+        this.baseAPIUrl = baseUrl.trim();
         this.contentType = contentType;
     }
 
     public BaseClient(String baseUrl, String contentType) {
-        this.baseAPIUrl = baseUrl;
-        this.contentType = ContentType.valueOf(contentType);
+        this(baseUrl, ContentType.valueOf(contentType));
     }
 
 
@@ -36,7 +42,7 @@ public class BaseClient {
 //                .body()
                 .baseUri(baseAPIUrl)
                 .contentType(contentType);
-        if (token != null) {
+        if (token != null && !token.isBlank()) {
             request.header("Authorization", "Bearer " + token);
         }
         return request;
