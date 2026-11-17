@@ -2,6 +2,8 @@ package com.greencity.ui.modal.auth;
 
 import com.greencity.ui.modal.BaseModal;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,6 +13,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class AuthModal extends BaseModal {
+
+    private static final By ERROR = By.cssSelector(
+            ".alert-general-error, .error-message, .validation-email-error, .validation-password-error");
+    private static final By SNACK_BAR = By.cssSelector("mat-snack-bar-container");
 
     @FindBy(css = "#email")
     private WebElement emailInput;
@@ -88,8 +94,11 @@ public class AuthModal extends BaseModal {
     }
 
     public boolean isSubmitEnabled() {
-        waitUntilElementVisible(submitButton);
-        return submitButton.isEnabled();
+        try {
+            return submitButton.isDisplayed() && submitButton.isEnabled();
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
+            return false;
+        }
     }
 
     public void submit() {
@@ -102,6 +111,7 @@ public class AuthModal extends BaseModal {
         enterEmail(email);
         enterPassword(password);
         submit();
+        waitForSubmitResult();
     }
 
     public void signUp(String name, String email, String password) {
@@ -115,29 +125,45 @@ public class AuthModal extends BaseModal {
         enterPassword(password);
         enterConfirmPassword(confirmation);
         submit();
+        waitForSubmitResult();
     }
 
     public String getRegistrationMessage() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("mat-snack-bar-container"))).getText().trim();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(SNACK_BAR)).getText().trim();
     }
 
     public String getError() {
-        By errorLocator = By.cssSelector(
-                ".alert-general-error, .error-message, .validation-email-error, .validation-password-error");
-
-        return wait.until(driver -> {
-            for (WebElement error : rootElement.findElements(errorLocator)) {
-                if (error.isDisplayed()) {
-                    String message = error.getText().trim();
-
-                    if (!message.isEmpty()) {
-                        return message;
-                    }
+        try {
+            for (WebElement error : rootElement.findElements(ERROR)) {
+                if (!error.isDisplayed()) {
+                    continue;
+                }
+                String message = error.getText().trim();
+                if (!message.isEmpty()) {
+                    return message;
                 }
             }
-            return null;
-        });
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
+            return "";
+        }
+        return "";
+    }
+
+    private void waitForSubmitResult() {
+        wait.until(driver -> !isOpen() || !getError().isEmpty() || isSnackbarVisible());
+    }
+
+    private boolean isSnackbarVisible() {
+        for (WebElement snackbar : driver.findElements(SNACK_BAR)) {
+            try {
+                if (snackbar.isDisplayed()) {
+                    return true;
+                }
+            } catch (StaleElementReferenceException e) {
+                continue;
+            }
+        }
+        return false;
     }
 
     private void fill(WebElement input, String value) {
