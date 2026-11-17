@@ -33,7 +33,7 @@ public abstract class Base {
         actions.moveToElement(element).perform();
     }
 
-    @Step("Scroll to the element")
+    @Step("Scroll to the element via JS")
     public void scrollToElementJs(WebElement element) {
         waitUntilElementVisible(element);
         try {
@@ -57,25 +57,27 @@ public abstract class Base {
 
     @Step("Scroll to the end of the page")
     public void scrollToEndOfPage() {
-        sleep(1000);
+        waitUntilPageLoaded();
         try {
             threadJs.executeScript("window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });");
         } catch (Exception e) {
-
             throw e;
         }
     }
 
     @Step("Check if content is truncated or overflows")
     protected boolean isContentTruncatedOrOverflow(WebElement element) {
-        String script = "var element = arguments[0];" + "var computedStyle = window.getComputedStyle(element);" + "var isOverflowing = element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;" + "var isTextOverflowing = computedStyle.overflow === 'hidden' || computedStyle.textOverflow === 'ellipsis' || computedStyle.whiteSpace === 'nowrap';" + "return isOverflowing && !isTextOverflowing;";
+        String script = "var element = arguments[0];" + "var computedStyle = window.getComputedStyle(element);"
+                + "var isOverflowing = element.scrollHeight > element.clientHeight ||" +
+                " element.scrollWidth > element.clientWidth;" + "var isTextOverflowing = " +
+                "computedStyle.overflow === 'hidden' || computedStyle.textOverflow === 'ellipsis' ||" +
+                " computedStyle.whiteSpace === 'nowrap';" + "return isOverflowing && !isTextOverflowing;";
 
         Boolean isOverflowing;
 
         try {
             isOverflowing = (Boolean) threadJs.executeScript(script, element);
         } catch (Exception ex) {
-
             throw ex;
         }
         return isOverflowing != null && isOverflowing;
@@ -83,15 +85,15 @@ public abstract class Base {
 
     @Step("Click on the element")
     protected void clickDynamicElement(WebElement element) {
-        waitUntilElementVisible(element);
+        waitUntilElementClickable(element);
         try {
             threadJs.executeScript("arguments[0].click();", element);
         } catch (Exception e) {
-
             throw e;
         }
     }
 
+    @Deprecated
     public void sleep(long millisSeconds) {
         try {
             Thread.sleep(millisSeconds);
@@ -120,7 +122,7 @@ public abstract class Base {
         wait.until(ExpectedConditions.visibilityOfAllElements(elements));
     }
 
-    public void waitUntilPageLouder() {
+    public void waitUntilPageLoaded() {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
     }
 }
