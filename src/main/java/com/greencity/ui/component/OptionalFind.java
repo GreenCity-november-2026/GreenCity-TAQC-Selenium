@@ -1,10 +1,9 @@
-package com.greencity.ui.page.econews.econews_parts;
+package com.greencity.ui.component;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
@@ -12,20 +11,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-final class Dom {
+public final class OptionalFind {
     private static final Pattern DIGITS = Pattern.compile("\\d+");
 
-    private Dom() {
+    private OptionalFind() {
     }
 
-    // Повертає область пошуку: переданий елемент або весь драйвер.
-    static SearchContext context(WebDriver driver, WebElement parent) {
-        return parent != null ? parent : driver;
-    }
-
-    // Повертає видимий текст першого елемента за локатором.
-    static String text(SearchContext context, By locator) {
+    public static String text(SearchContext context, By locator) {
         WebElement element = first(context, locator);
         if (element == null) {
             return "";
@@ -34,8 +26,7 @@ final class Dom {
         return value == null ? "" : value.trim();
     }
 
-    // Збирає видимі тексти всіх елементів за локатором.
-    static List<String> texts(SearchContext context, By locator) {
+    public static List<String> texts(SearchContext context, By locator) {
         List<String> values = new ArrayList<>();
         for (WebElement element : context.findElements(locator)) {
             String value = element.getText();
@@ -50,8 +41,7 @@ final class Dom {
         return values;
     }
 
-    // Дістає перше ціле число з рядка лічильника.
-    static int firstInt(String value) {
+    public static int firstInt(String value) {
         if (value == null) {
             return 0;
         }
@@ -59,14 +49,12 @@ final class Dom {
         return matcher.find() ? Integer.parseInt(matcher.group()) : 0;
     }
 
-    //Повертає перший елемент за локатором або null
-    static WebElement first(SearchContext context, By locator) {
+    public static WebElement first(SearchContext context, By locator) {
         List<WebElement> found = context.findElements(locator);
         return found.isEmpty() ? null : found.get(0);
     }
 
-   // Повертає перший видимий елемент за локатором.
-    static WebElement displayed(SearchContext context, By locator) {
+    public static WebElement displayed(SearchContext context, By locator) {
         for (WebElement element : context.findElements(locator)) {
             try {
                 if (element.isDisplayed()) {
@@ -79,8 +67,7 @@ final class Dom {
         return null;
     }
 
-    // Повертає всі видимі елементи за локатором.
-    static List<WebElement> displayedAll(SearchContext context, By locator) {
+    public static List<WebElement> displayedAll(SearchContext context, By locator) {
         List<WebElement> visible = new ArrayList<>();
         for (WebElement element : context.findElements(locator)) {
             try {
@@ -94,8 +81,7 @@ final class Dom {
         return visible;
     }
 
-    // Клікаємо на перший видимий елемент за локатором.
-    static void click(SearchContext context, By locator) {
+    public static void click(SearchContext context, By locator) {
         WebElement element = displayed(context, locator);
         if (element == null) {
             throw new NoSuchElementException(locator.toString());
@@ -103,8 +89,7 @@ final class Dom {
         element.click();
     }
 
-    // Перевірка що в атрибуті class елемента є заданий клас.
-    static boolean hasClass(WebElement element, String className) {
+    public static boolean hasClass(WebElement element, String className) {
         if (element == null) {
             return false;
         }
