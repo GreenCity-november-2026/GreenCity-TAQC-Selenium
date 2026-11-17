@@ -18,9 +18,6 @@ public class HomeHero extends BaseComponent {
     @FindBy(css = "#header-left button")
     private WebElement startFormingHabitButton;
 
-    @FindBy(css = "#header-left img")
-    private WebElement heroImg;
-
     public HomeHero(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
     }
