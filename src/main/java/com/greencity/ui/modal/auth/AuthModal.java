@@ -1,6 +1,7 @@
 package com.greencity.ui.modal.auth;
 
 import com.greencity.ui.modal.BaseModal;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -8,15 +9,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class AuthModal extends BaseModal {
 
+    private static final By ROOT = By.cssSelector("app-auth-modal");
     private static final By ERROR = By.cssSelector(
             ".alert-general-error, .error-message, .validation-email-error, .validation-password-error");
     private static final By SNACK_BAR = By.cssSelector("mat-snack-bar-container");
+
+    @FindBy(css = ".close-modal-window")
+    private WebElement closeButton;
 
     @FindBy(css = "#email")
     private WebElement emailInput;
@@ -40,13 +42,15 @@ public class AuthModal extends BaseModal {
     private WebElement signUpLink;
 
     public AuthModal(WebDriver driver) {
-        this(driver, new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(
-                        By.cssSelector("app-auth-modal"))));
+        super(driver, ROOT);
     }
 
-    public AuthModal(WebDriver driver, WebElement rootElement) {
-        super(driver, rootElement);
+    @Override
+    @Step("Close auth modal")
+    public void close() {
+        waitUntilElementClickable(closeButton);
+        closeButton.click();
+        waitUntilElementInvisible(rootElement);
     }
 
     public AuthModal waitUntilSignInOpen() {
