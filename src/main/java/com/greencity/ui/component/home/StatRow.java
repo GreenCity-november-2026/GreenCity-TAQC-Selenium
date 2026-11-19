@@ -7,8 +7,11 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class StatRow extends BaseComponent {
+    private static final String UBS_ROUTE = ".*#/ubs/?$";
+
     @FindBy(css = ".stat-row-content h3")
     private WebElement title;
 
@@ -20,6 +23,9 @@ public class StatRow extends BaseComponent {
 
     @FindBy(css = ".stat-row-content button")
     private WebElement startHabitButton;
+
+    @FindBy(css = ".stat-row-content .location-row a")
+    private WebElement placeLink;
 
     public StatRow(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
@@ -56,5 +62,16 @@ public class StatRow extends BaseComponent {
     private void clickStartHabit() {
         scrollToElementJs(startHabitButton);
         startHabitButton.click();
+    }
+
+    public String getPlaceLinkText() {
+        return placeLink.getText().trim();
+    }
+
+    @Step("Open place link from stat row")
+    public void openPlaceLink() {
+        scrollToElementJs(placeLink);
+        placeLink.click();
+        wait.until(ExpectedConditions.urlMatches(UBS_ROUTE));
     }
 }
