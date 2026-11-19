@@ -42,8 +42,8 @@ public class HomeStats extends BaseComponent {
     @Step("Get statistics '{name}'")
     public String getStat(String name) {
         return getRows().stream()
-                .map(StatRow::getTitle)
-                .filter(title -> title.toLowerCase().contains(name.toLowerCase()))
+                .filter(row -> row.getTitle().toLowerCase().contains(name.toLowerCase()))
+                .map(StatRow::getCounterText)
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("No stat row contains: " + name));
     }

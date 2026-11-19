@@ -2,7 +2,6 @@ package com.greencity.ui.component.home;
 
 import com.greencity.ui.component.BaseComponent;
 import com.greencity.ui.modal.auth.AuthModal;
-import com.greencity.ui.page.places.PlacesPage;
 import com.greencity.ui.page.profile.ProfilePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -22,9 +21,6 @@ public class StatRow extends BaseComponent {
     @FindBy(css = ".stat-row-content button")
     private WebElement startHabitButton;
 
-    @FindBy(css = ".location-row a")
-    private WebElement placesLink;
-
     public StatRow(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
     }
@@ -33,8 +29,12 @@ public class StatRow extends BaseComponent {
         return title.getText().trim();
     }
 
+    public String getCounterText() {
+        return counter.getText().trim();
+    }
+
     public int getCounter() {
-        return Integer.parseInt(counter.getText().replaceAll("\\D", ""));
+        return Integer.parseInt(getCounterText().replaceAll("\\D", ""));
     }
 
     public String getQuestion() {
@@ -51,13 +51,6 @@ public class StatRow extends BaseComponent {
     public AuthModal startHabitAsGuest() {
         clickStartHabit();
         return new AuthModal(driver);
-    }
-
-    @Step("Open places from stat row")
-    public PlacesPage openPlaces() {
-        scrollToElementJs(placesLink);
-        placesLink.click();
-        return new PlacesPage(driver);
     }
 
     private void clickStartHabit() {
