@@ -132,6 +132,13 @@ public class AuthModal extends BaseModal {
         waitForSubmitResult();
     }
 
+    public String getTitle() {
+        By heading = By.cssSelector("app-sign-in h1, app-sign-up h1");
+        return wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(
+                rootElement, heading
+        )).getFirst().getText().trim();
+    }
+
     public String getRegistrationMessage() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(SNACK_BAR)).getText().trim();
     }
