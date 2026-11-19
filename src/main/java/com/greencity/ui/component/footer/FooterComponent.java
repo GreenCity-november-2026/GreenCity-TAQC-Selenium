@@ -21,11 +21,11 @@ import java.util.Map;
 public class FooterComponent extends BaseComponent {
 
     private static final String HOME_ROUTE = ".*#/greenCity/?$";
-    private static final String NEWS_HASH = "#/greenCity/news";
-    private static final String EVENTS_HASH = "#/greenCity/events";
-    private static final String PLACES_HASH = "#/greenCity/places";
-    private static final String ABOUT_HASH = "#/greenCity/about";
-    private static final String UBS_HASH = "#/ubs";
+    private static final String NEWS_ROUTE = ".*#/greenCity/news/?$";
+    private static final String EVENTS_ROUTE = ".*#/greenCity/events/?$";
+    private static final String PLACES_ROUTE = ".*#/greenCity/places/?$";
+    private static final String ABOUT_ROUTE = ".*#/greenCity/about/?$";
+    private static final String UBS_ROUTE = ".*#/ubs/?$";
 
     @FindBy(css = "div.footer_logo-wrp a")
     private WebElement logoLink;
@@ -61,28 +61,28 @@ public class FooterComponent extends BaseComponent {
     @Step("Open Eco News from the footer")
     public NewsListPage openEcoNews() {
         clickLink(ecoNewsLink);
-        wait.until(ExpectedConditions.urlContains(NEWS_HASH));
+        wait.until(ExpectedConditions.urlMatches(NEWS_ROUTE));
         return new NewsListPage(driver);
     }
 
     @Step("Open Events from the footer")
     public EventsListPage openEvents() {
         clickLink(eventsLink);
-        wait.until(ExpectedConditions.urlContains(EVENTS_HASH));
+        wait.until(ExpectedConditions.urlMatches(EVENTS_ROUTE));
         return new EventsListPage(driver);
     }
 
     @Step("Open Places from the footer")
     public PlacesPage openPlaces() {
         clickLink(placesLink);
-        wait.until(ExpectedConditions.urlContains(PLACES_HASH));
+        wait.until(ExpectedConditions.urlMatches(PLACES_ROUTE));
         return new PlacesPage(driver);
     }
 
     @Step("Open About Us from the footer")
     public AboutPage openAbout() {
         clickLink(aboutLink);
-        wait.until(ExpectedConditions.urlContains(ABOUT_HASH));
+        wait.until(ExpectedConditions.urlMatches(ABOUT_ROUTE));
         return new AboutPage(driver);
     }
 
@@ -102,7 +102,7 @@ public class FooterComponent extends BaseComponent {
     @Step("Open UBS Courier from the footer")
     public void openUbs() {
         clickLink(ubsLink);
-        wait.until(ExpectedConditions.urlContains(UBS_HASH));
+        wait.until(ExpectedConditions.urlMatches(UBS_ROUTE));
     }
 
     @Step("Get footer copyright")

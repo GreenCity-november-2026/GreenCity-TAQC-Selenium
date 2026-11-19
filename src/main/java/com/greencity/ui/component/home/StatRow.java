@@ -10,6 +10,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class StatRow extends BaseComponent {
+    private static final String UBS_ROUTE = ".*#/ubs/?$";
+
     @FindBy(css = ".stat-row-content h3")
     private WebElement title;
 
@@ -21,7 +23,6 @@ public class StatRow extends BaseComponent {
 
     @FindBy(css = ".stat-row-content button")
     private WebElement startHabitButton;
-    private static final String UBS_HASH = "#/ubs";
 
     @FindBy(css = ".stat-row-content .location-row a")
     private WebElement placeLink;
@@ -71,6 +72,6 @@ public class StatRow extends BaseComponent {
     public void openPlaceLink() {
         scrollToElementJs(placeLink);
         placeLink.click();
-        wait.until(ExpectedConditions.urlContains(UBS_HASH));
+        wait.until(ExpectedConditions.urlMatches(UBS_ROUTE));
     }
 }
