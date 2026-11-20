@@ -41,6 +41,9 @@ public class AuthModal extends BaseModal {
     @FindBy(css = "a[aria-label='sign up modal window']")
     private WebElement signUpLink;
 
+    @FindBy(css = "h1")
+    private WebElement title;
+
     public AuthModal(WebDriver driver) {
         super(driver, ROOT);
     }
@@ -174,5 +177,10 @@ public class AuthModal extends BaseModal {
         waitUntilElementClickable(input);
         input.clear();
         input.sendKeys(value);
+    }
+
+    public String getTitle() {
+        waitUntilElementVisible(title);
+        return title.getText().trim();
     }
 }

@@ -54,6 +54,12 @@ public class FooterComponent extends BaseComponent {
     @FindBy(css = "a.footer_social-link")
     private List<WebElement> socialLinks;
 
+    @FindBy(css = "a.footer_link-item")
+    private List<WebElement> navLinks;
+
+    @FindBy(css = ".footer_follow-us")
+    private WebElement followUs;
+
     public FooterComponent(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
     }
@@ -120,6 +126,28 @@ public class FooterComponent extends BaseComponent {
             hrefs.put(name, link.getDomAttribute("href"));
         }
         return hrefs;
+    }
+
+    @Step("Scroll to the footer")
+    public FooterComponent scrollIntoView() {
+        scrollToElementJs(rootElement);
+        return this;
+    }
+
+    @Step("Get footer 'Follow us' text")
+    public String getFollowUsText() {
+        waitUntilElementInvisible(followUs);
+        return followUs.getText().trim();
+    }
+
+    @Step("Get footer navigation links")
+    public Map<String, String> getNavLinks() {
+        waitUntilAllElementsVisible(navLinks);
+        Map<String, String> links = new LinkedHashMap<>();
+        for (WebElement link :navLinks) {
+            links.put(link.getText().trim(), link.getDomAttribute("href"));
+        }
+        return links;
     }
 
     private void clickLink(WebElement link) {
