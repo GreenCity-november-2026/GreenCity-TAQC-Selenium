@@ -78,4 +78,10 @@ public class NewsFilterBar extends BaseComponent {
         }
         return new AuthModal(driver);
     }
+
+
+    public AuthModal openSaved() {
+        OptionalFind.click(driver, bookmarkButton);
+        return new AuthModal(driver);
+    }
 }

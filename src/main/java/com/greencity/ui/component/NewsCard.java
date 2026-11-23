@@ -1,5 +1,6 @@
 package com.greencity.ui.component;
 
+import com.greencity.ui.modal.auth.AuthModal;
 import com.greencity.ui.page.news.NewsDetailPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -74,5 +75,10 @@ public class NewsCard extends BaseComponent {
 
     public boolean isFavorite() {
         return OptionalFind.displayed(rootElement, favoriteMark) != null;
+    }
+
+    public AuthModal openBookmark() {
+        OptionalFind.click(rootElement, bookmark);
+        return new AuthModal(driver);
     }
 }
