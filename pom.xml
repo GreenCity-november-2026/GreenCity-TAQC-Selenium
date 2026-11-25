@@ -18,6 +18,7 @@
         <allure.version>2.24.0</allure.version>
         <aspectj.version>1.9.22.1</aspectj.version>
         <cucumber.version>7.21.1</cucumber.version>
+        <assertj-core.version>3.27.7</assertj-core.version>
     </properties>
 
     <dependencyManagement>
@@ -107,6 +108,13 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-picocontainer</artifactId>
             <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
