@@ -136,7 +136,7 @@ public class FooterComponent extends BaseComponent {
 
     @Step("Get footer 'Follow us' text")
     public String getFollowUsText() {
-        waitUntilElementInvisible(followUs);
+        waitUntilElementVisible(followUs);
         return followUs.getText().trim();
     }
 

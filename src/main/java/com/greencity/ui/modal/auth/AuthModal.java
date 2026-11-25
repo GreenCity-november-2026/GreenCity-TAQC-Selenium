@@ -41,9 +41,6 @@ public class AuthModal extends BaseModal {
     @FindBy(css = "a[aria-label='sign up modal window']")
     private WebElement signUpLink;
 
-    @FindBy(css = "h1")
-    private WebElement title;
-
     public AuthModal(WebDriver driver) {
         super(driver, ROOT);
     }
@@ -135,6 +132,13 @@ public class AuthModal extends BaseModal {
         waitForSubmitResult();
     }
 
+    public String getTitle() {
+        By heading = By.cssSelector("app-sign-in h1, app-sign-up h1");
+        return wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(
+                rootElement, heading
+        )).getFirst().getText().trim();
+    }
+
     public String getRegistrationMessage() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(SNACK_BAR)).getText().trim();
     }
@@ -177,10 +181,5 @@ public class AuthModal extends BaseModal {
         waitUntilElementClickable(input);
         input.clear();
         input.sendKeys(value);
-    }
-
-    public String getTitle() {
-        waitUntilElementVisible(title);
-        return title.getText().trim();
     }
 }
