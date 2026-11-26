@@ -81,7 +81,15 @@ public class NewsFilterBar extends BaseComponent {
 
 
     public AuthModal openSaved() {
+        String newsListUrl = driver.getCurrentUrl();
         OptionalFind.click(driver, bookmarkButton);
-        return new AuthModal(driver);
+        AuthModal modal = new AuthModal(driver).waitUntilSignInOpen();
+        if (!"Welcome back!".equals(modal.getTitle())) {
+            throw new IllegalStateException(modal.getTitle());
+        }
+        if (!driver.getCurrentUrl().equals(newsListUrl)) {
+            throw new IllegalStateException(driver.getCurrentUrl());
+        }
+        return modal;
     }
 }

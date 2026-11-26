@@ -78,7 +78,15 @@ public class NewsCard extends BaseComponent {
     }
 
     public AuthModal openBookmark() {
+        String newsListUrl = driver.getCurrentUrl();
         OptionalFind.click(rootElement, bookmark);
-        return new AuthModal(driver);
+        AuthModal modal = new AuthModal(driver).waitUntilSignInOpen();
+        if (!"Welcome back!".equals(modal.getTitle())) {
+            throw new IllegalStateException(modal.getTitle());
+        }
+        if (!driver.getCurrentUrl().equals(newsListUrl)) {
+            throw new IllegalStateException(driver.getCurrentUrl());
+        }
+        return modal;
     }
 }
