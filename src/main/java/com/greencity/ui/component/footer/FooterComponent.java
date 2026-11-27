@@ -128,6 +128,18 @@ public class FooterComponent extends BaseComponent {
         return hrefs;
     }
 
+    public Map<String, Boolean> getSocialDisabledStates() {
+        Map<String, Boolean> states = new LinkedHashMap<>();
+        for (WebElement link : socialLinks) {
+            String alt = link.findElement(By.tagName("img")).getDomAttribute("alt");
+            String name = alt == null ? "" :alt.replace(" link", "").trim();
+            boolean disabled = link.getDomAttribute("disabled") != null;
+
+            states.put(name, disabled);
+        }
+        return states;
+    }
+
     @Step("Scroll to the footer")
     public FooterComponent scrollIntoView() {
         scrollToElementJs(rootElement);
