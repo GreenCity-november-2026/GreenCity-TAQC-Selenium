@@ -41,6 +41,9 @@ public class AuthModal extends BaseModal {
     @FindBy(css = "a[aria-label='sign up modal window']")
     private WebElement signUpLink;
 
+    @FindBy(css = "app-sign-in h1")
+    private WebElement modalTitle;
+
     public AuthModal(WebDriver driver) {
         super(driver, ROOT);
     }
