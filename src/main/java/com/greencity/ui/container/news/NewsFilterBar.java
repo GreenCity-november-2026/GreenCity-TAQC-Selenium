@@ -66,7 +66,7 @@ public class NewsFilterBar extends BaseComponent {
         return new CreateEditNewsPage(driver);
     }
 
-    public AuthModal openCreateAsGuest() {
+    public CreateEditNewsPage openCreateAsGuest() {
         WebElement button = OptionalFind.displayed(driver, createButton);
         if (button != null) {
             button.click();
@@ -76,7 +76,7 @@ public class NewsFilterBar extends BaseComponent {
             String base = hash >= 0 ? url.substring(0, hash) : url;
             driver.get(base + CREATE_HASH);
         }
-        return new AuthModal(driver);
+        return new CreateEditNewsPage(driver);
     }
 
 
