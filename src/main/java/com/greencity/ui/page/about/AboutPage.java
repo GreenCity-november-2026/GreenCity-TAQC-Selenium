@@ -13,6 +13,4 @@ public class AboutPage extends GreenCityPage {
     public AboutPage(WebDriver driver) {
         super(driver);
     }
-
-
 }
