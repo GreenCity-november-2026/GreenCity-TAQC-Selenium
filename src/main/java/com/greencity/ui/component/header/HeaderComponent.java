@@ -12,6 +12,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.TimeoutException;
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class HeaderComponent extends BaseComponent {
@@ -104,6 +107,61 @@ public class HeaderComponent extends BaseComponent {
             WebElement current = visibleControl(CURRENT_LANGUAGE);
             return current != null && language.equals(current.getText().trim());
         });
+    }
+
+    public boolean isLogoVisible() {
+        return waitForVisibleElement(By.cssSelector("img[src='assets/img/logo.svg']"));
+    }
+
+    public boolean isSignInVisible() {
+        return waitForVisibleElement(SIGN_IN);
+    }
+
+    public boolean isSignUpVisible() {
+        return waitForVisibleElement(SIGN_UP);
+    }
+
+    public boolean isLanguageSwitcherVisible() {
+        return waitForVisibleElement(LANGUAGE);
+    }
+
+    private boolean waitForVisibleElement(By locator) {
+        try {
+            return wait.until(ExpectedConditions.refreshed(d ->
+                    rootElement.findElements(locator).stream()
+                            .anyMatch(WebElement::isDisplayed)));
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
+    public List<String> getAvailableLanguages() {
+        List<String> languages = new ArrayList<>();
+        languages.add(getLanguage());
+
+        wait.until(d -> visibleControl(CURRENT_LANGUAGE)).click();
+
+        By options = By.cssSelector(
+                "[aria-label='language switcher'] [role='menuitem']");
+        List<WebElement> items = wait.until(
+                ExpectedConditions.visibilityOfNestedElementsLocatedBy(rootElement, options));
+
+        for (WebElement item : items) {
+            String language = item.getDomAttribute("aria-label");
+            if (language != null && !language.isBlank() && !languages.contains(language)) {
+                languages.add(language);
+            }
+        }
+
+        wait.until(d -> visibleControl(CURRENT_LANGUAGE)).click();
+        languages.sort(String::compareTo);
+        return languages;
+    }
+
+    public boolean isLogoInViewport() {
+        return logo.isDisplayed() && Boolean.TRUE.equals(threadJs.executeScript(
+                "const r = arguments[0].getBoundingClientRect();" +
+                        "return r.top >= 0 && r.bottom <= window.innerHeight;", logo));
     }
 
     public String getWarningText() {
