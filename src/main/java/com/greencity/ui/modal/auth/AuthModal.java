@@ -134,9 +134,18 @@ public class AuthModal extends BaseModal {
 
     public String getTitle() {
         By heading = By.cssSelector("app-sign-in h1, app-sign-up h1");
-        return wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(
-                rootElement, heading
-        )).getFirst().getText().trim();
+
+        return wait.until(ExpectedConditions.refreshed(d -> {
+            for (WebElement element : rootElement.findElements(heading)) {
+                if (element.isDisplayed()) {
+                    String title = element.getText().trim();
+                    if (!title.isEmpty()) {
+                        return title;
+                    }
+                }
+            }
+            return null;
+        }));
     }
 
     public String getRegistrationMessage() {
